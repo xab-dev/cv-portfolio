@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cahier — 192 pages, extraits</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0F1220;
+    --paper:#EDE7D8;
+    --paper-dim:#C9C2B0;
+    --gold:#C9A227;
+    --gold-dim:rgba(201,162,39,0.35);
+    --root:#B8342F;
+    --sacral:#D97A34;
+    --solar:#D9B23C;
+    --heart:#3F8F63;
+    --throat:#3C86A6;
+    --thirdeye:#4A5FC1;
+    --crown:#8E5CC6;
+    --wine:#7A2E3A;
+    --rose:#C97B8A;
+    --blush:rgba(201,123,138,0.08);
+    --sage:#7C9471;
+    --sage-dim:rgba(124,148,113,0.3);
+    --kraft:#C2A06B;
+    --kraft-dim:rgba(194,160,107,0.32);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(900px 500px at 85% -5%, rgba(142,92,198,0.10), transparent 60%),
+      radial-gradient(700px 420px at 10% 10%, rgba(60,134,166,0.08), transparent 55%),
+      var(--ink);
+    color:var(--paper);
+    font-family:'IBM Plex Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .grain{
+    position:fixed; inset:0; pointer-events:none; opacity:.05; z-index:5;
+    background-image: repeating-radial-gradient(circle at 0 0, #fff 0, transparent 1px);
+    background-size: 3px 3px;
+  }
+
+  .progress{
+    position:fixed; top:0; left:0; height:3px; width:0%;
+    background: linear-gradient(90deg, var(--root),var(--sacral),var(--solar),var(--heart),var(--throat),var(--thirdeye),var(--crown));
+    z-index:20; transition: width .1s linear;
+  }
+
+  .layout{ display:flex; max-width:1080px; margin:0 auto; }
+
+  nav.rail{
+    position:sticky; top:0; align-self:flex-start;
+    width:168px; padding:48px 10px 40px 24px;
+    display:flex; flex-direction:column; gap:2px;
+    height:100vh; overflow-y:auto;
+  }
+  nav.rail a{
+    display:block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.02em;
+    color: var(--paper-dim);
+    text-decoration:none;
+    padding:7px 10px;
+    border-left:2px solid transparent;
+    transition: color .2s, border-color .2s, padding .2s;
+  }
+  nav.rail a:hover{ color: var(--hover, var(--gold)); border-left-color: var(--hover, var(--gold)); }
+  nav.rail a.active{
+    color: var(--hover, var(--gold));
+    border-left-color: var(--hover, var(--gold));
+    padding-left:14px;
+  }
+  nav.rail .nav-part{
+    font-family:'IBM Plex Mono', monospace; font-size:11px; font-weight:600;
+    color: var(--kraft);
+    text-decoration:none; display:block;
+    padding:14px 10px 4px;
+    letter-spacing:0.02em;
+  }
+  nav.rail .nav-part:first-child{ padding-top:0; }
+  nav.rail .nav-sub{ padding-left:20px !important; font-size:10.5px; opacity:0.9; }
+  nav.rail .nav-sub.active{ padding-left:24px !important; }
+
+  main{ flex:1; min-width:0; padding: 0 28px 120px; }
+
+  .cover{
+    padding: 90px 10px 60px;
+    text-align:center;
+    border-bottom:1px solid var(--gold-dim);
+    margin-bottom: 70px;
+  }
+  .cover .frame{
+    width:112px; height:112px; margin:0 auto 26px;
+    border-radius:50%;
+    padding:4px;
+    background: conic-gradient(from 0deg, var(--root),var(--sacral),var(--solar),var(--heart),var(--throat),var(--thirdeye),var(--crown),var(--root));
+  }
+  .cover .frame img{
+    width:100%; height:100%; border-radius:50%;
+    object-fit:cover; display:block;
+    border: 3px solid var(--ink);
+  }
+  .cover h1{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600;
+    font-size:46px;
+    margin: 0 0 8px;
+    letter-spacing:0.01em;
+  }
+  .cover p{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--paper-dim);
+    margin:0;
+  }
+
+  /* ---- Sommaire ---- */
+  .sommaire{ margin-bottom:80px; }
+  .sommaire-grid{
+    display:grid; grid-template-columns: repeat(auto-fit, minmax(230px,1fr));
+    gap:22px;
+  }
+  .sommaire-part{
+    border:1px solid var(--kraft-dim); border-radius:3px;
+    padding:16px 18px;
+  }
+  .sommaire-part .roman{
+    font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--kraft); margin-bottom:6px;
+  }
+  .sommaire-part h3{
+    font-family:'Cormorant Garamond', serif; font-weight:600; font-size:19px; margin:0 0 10px; color:var(--paper);
+  }
+  .sommaire-part ul{ list-style:none; margin:0; padding:0; }
+  .sommaire-part li{
+    font-size:12.5px; color:var(--paper-dim); padding:3px 0;
+    border-top:1px dotted rgba(237,231,216,0.1);
+  }
+  .sommaire-part li:first-child{ border-top:none; }
+
+  /* ---- Séparateur de partie ---- */
+  .divider{
+    width: calc(100% + 56px); margin-left: -28px; margin-right: -28px;
+    position:relative;
+    background: linear-gradient(180deg, rgba(194,160,107,0.10), transparent 75%);
+    border-top:1px solid var(--kraft-dim);
+    border-bottom:1px solid var(--kraft-dim);
+    padding: 52px 28px 46px;
+    text-align:center;
+    margin-top: 30px; margin-bottom: 50px;
+    box-sizing: border-box;
+  }
+  .divider .tab{
+    display:inline-block;
+    font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--kraft);
+    border:1px solid var(--kraft-dim); border-radius:20px; padding:4px 14px; margin-bottom:20px;
+  }
+  .divider .numeral{
+    font-family:'Cormorant Garamond',serif; font-weight:600; font-size:56px; color:var(--kraft); line-height:1; margin-bottom:12px;
+  }
+  .divider h2{ border:none !important; font-size:27px; margin:0 0 10px !important; color:var(--paper); }
+  .divider p{ font-family:'IBM Plex Sans',sans-serif; font-size:13px; color:var(--paper-dim); max-width:440px; margin:0 auto; }
+
+  section{ margin-bottom: 86px; scroll-margin-top: 24px; }
+
+  .reveal{
+    opacity:0; transform: translateY(18px);
+    transition: opacity .7s ease, transform .7s ease;
+  }
+  .reveal.in-view{ opacity:1; transform: translateY(0); }
+
+  .liftable{ transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+  .liftable:hover{
+    transform: translateY(-4px);
+    box-shadow: 0 16px 34px -20px rgba(0,0,0,0.5);
+    border-color: rgba(201,162,39,0.6);
+  }
+
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--gold);
+    margin:0 0 6px;
+  }
+  h2{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600;
+    font-size:32px;
+    margin: 0 0 22px;
+    padding-bottom:14px;
+    border-bottom:1px solid var(--gold-dim);
+  }
+  .lede{
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-size:18px;
+    color:var(--paper-dim);
+    max-width:62ch;
+    margin: 0 0 26px;
+  }
+
+  /* ---- Page 1 : symboles ---- */
+  .symbols-row{ display:flex; gap:40px; align-items:center; flex-wrap:wrap; margin-bottom: 34px; }
+  .symbol-svg{ width:120px; height:120px; }
+  .rainbow-diagram{ width:100%; max-width:420px; height:140px; margin: 10px 0 30px; }
+  .sun-rays{ transform-box: fill-box; transform-origin: center; animation: spin-slow 18s linear infinite; }
+  @keyframes spin-slow{ to{ transform: rotate(360deg); } }
+  .rune{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    line-height:1.8;
+    color:#F0D98C;
+    background: rgba(201,162,39,0.06);
+    border:1px solid var(--gold-dim);
+    border-radius:2px;
+    padding:18px 20px;
+    max-width: 640px;
+  }
+  .caption{ font-size:13px; color:var(--paper-dim); max-width:60ch; line-height:1.6; }
+
+  /* ---- Chakras ---- */
+  .chakra-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px,1fr));
+    gap:14px;
+  }
+  .chakra-card{
+    border-radius:3px;
+    padding:16px 14px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0));
+    border:1px solid var(--gold-dim);
+    position:relative;
+  }
+  .chakra-dot{
+    width:12px; height:12px; border-radius:50%;
+    margin-bottom:10px;
+    box-shadow: 0 0 12px 1px var(--dot-color);
+    background: var(--dot-color);
+  }
+  .chakra-card h3{
+    font-family:'Cormorant Garamond', serif;
+    font-size:17px; margin:0 0 8px; font-weight:600;
+  }
+  .matrix{
+    display:grid; grid-template-columns: repeat(4,1fr); gap:3px;
+  }
+  .matrix span{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:9.5px; color: rgba(237,231,216,0.35);
+    text-align:center; padding:3px 0;
+    border:1px solid rgba(237,231,216,0.08);
+  }
+  .matrix-note{ font-size:11px; color:var(--paper-dim); margin-top:10px; font-style:italic; font-family:'Cormorant Garamond',serif; }
+
+  /* ---- IPI ---- */
+  .badge-row{ display:flex; gap:24px; align-items:center; flex-wrap:wrap; margin-bottom:28px; }
+  .badge{ width:88px; height:88px; }
+  .manifesto{
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-size:20px;
+    line-height:1.5;
+    max-width:56ch;
+    border-left:2px solid var(--sacral);
+    padding-left:20px;
+  }
+  .manifesto cite{
+    display:block; font-style:normal; font-family:'IBM Plex Mono',monospace;
+    font-size:11px; color:var(--paper-dim); margin-top:10px;
+  }
+  .draft-msg{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px; line-height:1.7;
+    background: rgba(217,122,52,0.07);
+    border:1px dashed rgba(217,122,52,0.4);
+    padding:16px 18px; border-radius:2px;
+    max-width:600px; color:#F0C9A4;
+  }
+  .site-mock{
+    border:1px solid var(--gold-dim);
+    border-radius:4px;
+    padding:18px 20px;
+    max-width:420px;
+    background: rgba(255,255,255,0.02);
+  }
+  .site-mock .top{ display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+  .site-mock .top .badge{ width:40px; height:40px; }
+  .site-mock .top .name{ font-family:'Cormorant Garamond',serif; font-size:20px; }
+  .site-mock .btn{
+    display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:11px;
+    border:1px solid var(--gold); color:var(--gold);
+    padding:7px 14px; border-radius:2px; margin-top:6px;
+  }
+  .site-mock .mail{ font-size:11px; color:var(--paper-dim); margin-top:10px; }
+
+  .eval-grid{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:0; border:1px solid var(--gold-dim); border-radius:3px; overflow:hidden; }
+  .eval-col{ padding:16px 16px 20px; }
+  .eval-col:not(:last-child){ border-right:1px solid var(--gold-dim); }
+  .eval-col h4{ font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--gold); margin:0 0 10px; letter-spacing:.03em; }
+  .eval-col p{ font-size:12.5px; color:var(--paper-dim); margin:0; line-height:1.6; }
+  .logic-line{
+    margin-top:16px;
+    font-family:'IBM Plex Mono', monospace; font-size:12px; color:#F0D98C;
+  }
+
+  /* ---- cooldown ---- */
+  .cooldown-card{
+    display:flex; gap:20px; align-items:center;
+    border:1px solid var(--gold-dim); border-radius:3px;
+    padding:20px 24px; max-width:520px;
+  }
+  .cooldown-card svg{ flex:0 0 auto; width:44px; height:44px; }
+  .cooldown-card ol{ margin:0; padding-left:18px; font-size:13.5px; line-height:1.8; }
+
+  /* ---- damier ---- */
+  .damier{
+    display:grid; grid-template-columns: repeat(8, 1fr);
+    max-width: 420px; border:1px solid var(--gold-dim);
+  }
+  .damier div{
+    aspect-ratio:1; display:flex; align-items:center; justify-content:center;
+  }
+  .damier div:nth-child(odd){ background: rgba(255,255,255,0.025); }
+  .damier .done{ color:var(--heart); font-size:12px; }
+  .damier .todo{ color:var(--paper-dim); font-size:10px; }
+  .todo-note{ margin-top:14px; font-size:12.5px; color:var(--paper-dim); max-width:56ch; }
+
+  /* ---- p13 teaser ---- */
+  .teaser{
+    border:1px solid var(--gold-dim); border-radius:3px;
+    padding:18px 20px; max-width:560px;
+    background: rgba(60,134,166,0.05);
+  }
+  .teaser ul{ margin:8px 0 0; padding-left:18px; font-size:13px; line-height:1.7; }
+
+  /* ---- Yadebat ---- */
+  .yadebat-title{
+    text-align:center; margin: 6px auto 40px; max-width:340px;
+  }
+  .yadebat-title .frame-box{
+    border: 2px solid var(--rose);
+    border-radius: 2px;
+    padding: 18px 26px;
+    position:relative;
+  }
+  .yadebat-title .frame-box::before, .yadebat-title .frame-box::after{
+    content:"✦"; position:absolute; color:var(--rose); font-size:13px; top:-9px;
+  }
+  .yadebat-title .frame-box::before{ left:-9px; }
+  .yadebat-title .frame-box::after{ right:-9px; }
+  .yadebat-title h2{
+    border:none; margin:0; padding:0;
+    text-decoration: underline;
+    text-decoration-color: var(--rose);
+    text-underline-offset:8px;
+    font-size:30px;
+  }
+
+  .yq{
+    margin-bottom:56px;
+    padding-bottom:40px;
+    border-bottom: 1px dashed rgba(201,123,138,0.28);
+  }
+  .yq:last-of-type{ border-bottom:none; }
+  .yq .qnum{
+    font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--rose); margin-bottom:6px;
+  }
+  .yq .q{
+    font-family:'Cormorant Garamond', serif; font-size:23px; font-style:italic;
+    color:var(--paper); margin:0 0 16px; max-width:56ch;
+  }
+  .yq .a{ font-size:14px; line-height:1.7; color:var(--paper-dim); max-width:58ch; margin:0 0 10px; }
+  .yq .poem{
+    font-family:'Cormorant Garamond', serif; font-size:18px; font-style:italic;
+    line-height:1.7; color:#EBC9CE;
+    border-left: 2px solid var(--rose);
+    padding-left:18px; margin: 16px 0; max-width:44ch;
+  }
+  .choice-list{ list-style:none; margin:14px 0; padding:0; max-width:52ch; }
+  .choice-list li{
+    font-size:13.5px; padding:8px 12px; margin-bottom:6px;
+    border:1px solid rgba(201,123,138,0.3); border-radius:2px;
+    color:var(--paper-dim);
+  }
+  .blank-line{
+    display:inline-block; min-width:160px; border-bottom:1px dotted var(--rose);
+  }
+  .rhyme-row{ display:flex; gap:10px; flex-wrap:wrap; margin:14px 0; }
+  .rhyme-chip{
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px;
+    border:1px solid rgba(201,123,138,0.4); color:var(--rose);
+    padding:5px 12px; border-radius:20px;
+  }
+  .motto{
+    display:flex; align-items:center; gap:16px; margin:20px 0;
+  }
+  .motto svg{ flex:0 0 auto; width:52px; height:52px; }
+  .motto span{
+    font-family:'Cormorant Garamond', serif; font-weight:600; font-size:22px; color:#EBC9CE;
+  }
+  .big-q{
+    font-family:'Cormorant Garamond', serif; font-size:120px; line-height:1;
+    color: rgba(201,123,138,0.18); position:absolute; right:6px; top:-24px;
+    pointer-events:none; user-select:none;
+  }
+  .yq.relative{ position:relative; }
+
+  /* ---- Réconciliation (page 23) ---- */
+  .recon-stage{
+    position:relative;
+    max-width:480px; margin: 10px auto 8px;
+    padding: 30px 10px;
+    overflow:hidden;
+    border:1px solid var(--gold-dim);
+    border-radius:3px;
+  }
+  .recon-scribble{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Caveat', cursive;
+    font-weight:700;
+    font-size:64px;
+    color: rgba(217,185,140,0.14);
+    transform: rotate(-9deg);
+    white-space:nowrap;
+    pointer-events:none;
+    letter-spacing:0.02em;
+  }
+  .recon-svg{ position:relative; width:100%; height:220px; display:block; }
+
+  /* ---- Le dossier (p.24-31) ---- */
+  .quest-card{
+    border:1px solid var(--sage-dim);
+    border-radius:3px;
+    padding:22px 24px;
+    max-width:560px;
+    background: rgba(124,148,113,0.05);
+  }
+  .quest-level{
+    display:flex; align-items:center; gap:12px;
+    font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--sage);
+    margin-bottom:18px;
+  }
+  .quest-level .bar{
+    flex:1; height:4px; background:rgba(124,148,113,0.2); border-radius:2px; position:relative; overflow:hidden;
+  }
+  .quest-level .bar::after{
+    content:""; position:absolute; inset:0 70% 0 0; background:var(--sage);
+  }
+  .quest-step{ margin-bottom:20px; }
+  .quest-step:last-child{ margin-bottom:0; }
+  .quest-step .num{
+    font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:var(--sage); letter-spacing:.05em;
+  }
+  .quest-step .title{
+    font-family:'Cormorant Garamond', serif; font-style:italic; font-size:19px; margin:4px 0 8px; color:var(--paper);
+  }
+  .quest-step .body{ font-size:13.5px; line-height:1.7; color:var(--paper-dim); }
+  .quest-tags{ display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+  .quest-tags span{
+    font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:var(--sage);
+    border:1px solid var(--sage-dim); padding:3px 9px; border-radius:20px;
+  }
+  .quest-triad{ display:flex; gap:18px; margin-top:6px; flex-wrap:wrap; }
+  .quest-triad span{ font-size:12.5px; color:var(--paper-dim); font-style:italic; font-family:'Cormorant Garamond',serif; }
+  .quest-triad span:not(:last-child)::after{ content:"/"; margin-left:18px; color:var(--sage-dim); }
+  .quest-date{ margin-top:16px; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--paper-dim); text-align:right; }
+
+  .open-q{
+    border-left:2px solid var(--sage);
+    padding: 6px 0 6px 20px;
+    max-width:56ch;
+  }
+  .open-q .q{
+    font-family:'Cormorant Garamond', serif; font-style:italic; font-size:19px; color:var(--paper); margin:0 0 16px;
+  }
+  .open-q .answer-space{
+    border-bottom:1px dotted var(--sage-dim);
+    height:20px; max-width:80%; margin-bottom:14px;
+  }
+  .open-q .hint{ font-size:11.5px; color:var(--paper-dim); font-style:italic; }
+
+  .dense-page{
+    border:1px solid var(--sage-dim); border-radius:3px;
+    padding:20px 22px; max-width:560px;
+    background:
+      repeating-linear-gradient(180deg, rgba(237,231,216,0.035) 0px, rgba(237,231,216,0.035) 1px, transparent 1px, transparent 13px);
+  }
+  .dense-page .meta{ font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--sage); margin-bottom:12px; }
+  .dense-page p{ font-size:13.5px; line-height:1.7; color:var(--paper-dim); margin:0 0 12px; }
+  .dense-page blockquote{
+    margin: 14px 0 0; padding-left:16px; border-left:2px solid var(--sage);
+    font-family:'Cormorant Garamond',serif; font-style:italic; font-size:17px; color:var(--paper);
+  }
+
+  .spiral-wrap{ text-align:center; margin: 6px 0 4px; }
+  .spiral-wrap svg{ width:100%; max-width:280px; height:auto; }
+  .spiral-draw path{
+    stroke-dasharray: 240;
+    stroke-dashoffset: 240;
+  }
+  .spiral-draw.in-view path{
+    animation: draw-in 1.8s ease forwards;
+  }
+  .spiral-draw.in-view path:nth-child(2){ animation-delay: .15s; }
+  .spiral-draw.in-view path:nth-child(3){ animation-delay: .3s; }
+  .spiral-draw.in-view path:nth-child(4){ animation-delay: .45s; }
+  @keyframes draw-in{ to{ stroke-dashoffset:0; } }
+  .spiral-caption{ font-size:12px; color:var(--paper-dim); font-style:italic; font-family:'Cormorant Garamond',serif; margin-top:8px; }
+
+  .couplet{
+    text-align:center; max-width:420px; margin:20px auto;
+    font-family:'Cormorant Garamond', serif; font-style:italic; font-size:24px; line-height:1.6;
+    color:var(--paper);
+  }
+
+  .tattoo-page{
+    border:1px dashed var(--sage-dim); border-radius:3px;
+    padding:24px; max-width:520px; text-align:center;
+  }
+  .tattoo-glyphs{ display:flex; justify-content:center; gap:18px; margin-bottom:16px; flex-wrap:wrap; }
+  .tattoo-glyphs svg{ width:40px; height:40px; opacity:.6; }
+
+  .healing-card{
+    border:1px solid var(--sage-dim); border-radius:3px; max-width:560px; overflow:hidden;
+  }
+  .healing-cols{ display:grid; grid-template-columns:1fr 1fr; }
+  .healing-cols > div{ padding:18px 20px; font-size:13px; line-height:1.7; color:var(--paper-dim); }
+  .healing-cols > div:first-child{ border-right:1px solid var(--sage-dim); }
+  .healing-cols h4{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--sage); margin:0 0 8px; letter-spacing:.04em; }
+  .healing-aura{
+    border-top:1px solid var(--sage-dim); padding:16px 20px;
+    font-family:'Cormorant Garamond',serif; font-style:italic; font-size:15.5px; color:var(--paper);
+    text-align:center;
+  }
+  .healing-conclusion{
+    border-top:1px dashed var(--sage-dim); padding:14px 20px;
+    font-size:12.5px; color:var(--paper-dim);
+  }
+
+  .airy-close{ text-align:center; padding: 10px 0 4px; }
+  .airy-close svg{ width:220px; height:90px; opacity:.55; }
+
+  /* ---- Clôture ---- */
+  .closing-quote{
+    max-width:600px; margin: 0 auto 54px; text-align:center;
+    padding-top:26px;
+  }
+  .closing-quote::before{
+    content:""; display:block; width:40px; height:1px;
+    background:var(--gold-dim); margin:0 auto 26px;
+  }
+  .closing-quote p{
+    font-family:'Cormorant Garamond', serif; font-style:italic;
+    font-size:21px; line-height:1.65; color:var(--paper);
+    margin:0;
+  }
+  .closing-tags{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:20px; }
+  .closing-tags span{
+    font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--gold);
+    border:1px solid var(--gold-dim); padding:4px 12px; border-radius:20px;
+  }
+  .closing-dedicace{
+    max-width:440px; margin: 0 auto 54px; text-align:center; padding-top:10px;
+  }
+  .closing-dedicace p{
+    font-family:'Cormorant Garamond', serif; font-style:italic; font-weight:500;
+    font-size:26px; line-height:1.6; color:#F0D98C;
+    margin:0;
+  }
+
+  .finale{
+    position:relative;
+    width: calc(100% + 56px); margin-left: -28px; margin-right: -28px;
+    background:
+      radial-gradient(700px 500px at 50% 20%, rgba(142,92,198,0.16), transparent 65%),
+      radial-gradient(500px 700px at 80% 80%, rgba(60,86,166,0.12), transparent 60%),
+      #090711;
+    padding: 70px 28px 90px;
+    margin-top: -20px;
+    box-sizing: border-box;
+  }
+  .finale-inner{ max-width:1080px; margin:0 auto; text-align:center; }
+  .finale .eyebrow{ color:#B9A6E0; }
+  .finale h2{
+    border:none; color:var(--paper); font-size:30px;
+    max-width:520px; margin:0 auto 34px;
+  }
+  .finale-svg-wrap{ max-width:520px; margin:0 auto; }
+  .finale-svg-wrap svg{ width:100%; height:auto; display:block; }
+  .finale-caption{
+    max-width:480px; margin: 26px auto 0;
+    font-size:13px; line-height:1.7; color:var(--paper-dim);
+  }
+
+  footer{
+    text-align:center; padding-top:30px; border-top:1px solid var(--gold-dim);
+    font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--paper-dim);
+  }
+
+  @media (max-width: 760px){
+    nav.rail{ display:none; }
+    main{ padding: 0 18px 90px; }
+    .divider{ width: calc(100% + 36px); margin-left:-18px; margin-right:-18px; padding-left:18px; padding-right:18px; }
+    .finale{ width: calc(100% + 36px); margin-left:-18px; margin-right:-18px; padding-left:18px; padding-right:18px; }
+  }
+  @media (max-width: 560px){
+    .eval-grid{ grid-template-columns: 1fr; }
+    .eval-col:not(:last-child){ border-right:none; border-bottom:1px solid var(--gold-dim); }
+    .big-q{ font-size:80px; top:-14px; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .reveal{ opacity:1 !important; transform:none !important; transition:none !important; }
+    .sun-rays{ animation:none; }
+    .spiral-draw path{ stroke-dasharray:none; stroke-dashoffset:0; animation:none; }
+    .liftable{ transition:none; }
+    .liftable:hover{ transform:none; }
+    .progress{ transition:none; }
+  }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<div class="layout">
+
+    <nav class="rail">
+    <a href="#partie1" class="nav-part" style="--hover:#D9C79A;">I — Le Soi symbolique</a>
+    <a href="#p1" class="nav-sub" style="--hover:var(--gold);">Symboles</a>
+    <a href="#p23" class="nav-sub" style="--hover:var(--gold);">Chakras &amp; aura</a>
+    <a href="#p23sym" class="nav-sub" style="--hover:#D9B98C;">Réconciliation</a>
+
+    <a href="#partie2" class="nav-part" style="--hover:#D9C79A;">II — La relation</a>
+    <a href="#yadebat" class="nav-sub" style="--hover:var(--rose);">Yadebat</a>
+
+    <a href="#partie3" class="nav-part" style="--hover:#D9C79A;">III — Le travail sur soi</a>
+    <a href="#journal" class="nav-sub" style="--hover:var(--sage);">Le dossier</a>
+    <a href="#closing" class="nav-sub" style="--hover:#B9A6E0;">Clôture</a>
+
+    <a href="#partie4" class="nav-part" style="--hover:#D9C79A;">IV — Les projets</a>
+    <a href="#ipi" class="nav-sub" style="--hover:var(--gold);">IPI 2.1</a>
+    <a href="#p8" class="nav-sub" style="--hover:var(--gold);">Le site</a>
+    <a href="#p9" class="nav-sub" style="--hover:var(--gold);">Évaluation</a>
+    <a href="#cooldown" class="nav-sub" style="--hover:var(--throat);">Cooldown</a>
+    <a href="#p12" class="nav-sub" style="--hover:var(--gold);">Damier</a>
+    <a href="#p13" class="nav-sub" style="--hover:var(--throat);">haTD</a>
+
+    <a href="#partie5" class="nav-part" style="--hover:#D9C79A;">V — Le portrait</a>
+    <a href="#finale" class="nav-sub" style="--hover:#B9A6E0;">Épilogue</a>
+  </nav>
+
+  <main>
+
+    <div class="cover">
+      <div class="frame"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/4QLcRXhpZgAATU0AKgAAAAgABAE7AAIAAAAGAAABSodpAAQAAAABAAABUJydAAEAAAAMAAACyOocAAcAAAEMAAAAPgAAAAAc6gAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAeGEgeGEAAAWQAwACAAAAFAAAAp6QBAACAAAAFAAAArKSkQACAAAAAzMzAACSkgACAAAAAzMzAADqHAAHAAABDAAAAZIAAAAAHOoAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADIwMjQ6MTA6MTggMTc6MjQ6MjQAMjAyNDoxMDoxOCAxNzoyNDoyNAAAAHgAYQAgAHgAYQAAAP/hBBhodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvADw/eHBhY2tldCBiZWdpbj0n77u/JyBpZD0nVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkJz8+DQo8eDp4bXBtZXRhIHhtbG5zOng9ImFkb2JlOm5zOm1ldGEvIj48cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPjxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PSJ1dWlkOmZhZjViZGQ1LWJhM2QtMTFkYS1hZDMxLWQzM2Q3NTE4MmYxYiIgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIi8+PHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9InV1aWQ6ZmFmNWJkZDUtYmEzZC0xMWRhLWFkMzEtZDMzZDc1MTgyZjFiIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iPjx4bXA6Q3JlYXRlRGF0ZT4yMDI0LTEwLTE4VDE3OjI0OjI0LjMzMjwveG1wOkNyZWF0ZURhdGU+PC9yZGY6RGVzY3JpcHRpb24+PHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9InV1aWQ6ZmFmNWJkZDUtYmEzZC0xMWRhLWFkMzEtZDMzZDc1MTgyZjFiIiB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iPjxkYzpjcmVhdG9yPjxyZGY6U2VxIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyI+PHJkZjpsaT54YSB4YTwvcmRmOmxpPjwvcmRmOlNlcT4NCgkJCTwvZGM6Y3JlYXRvcj48L3JkZjpEZXNjcmlwdGlvbj48L3JkZjpSREY+PC94OnhtcG1ldGE+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPD94cGFja2V0IGVuZD0ndyc/Pv/bAEMABwUFBgUEBwYFBggHBwgKEQsKCQkKFQ8QDBEYFRoZGBUYFxseJyEbHSUdFxgiLiIlKCkrLCsaIC8zLyoyJyorKv/bAEMBBwgICgkKFAsLFCocGBwqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKv/AABEIAS4BRwMBIgACEQEDEQH/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv/xAC1EAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8/T19vf4+fr/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv/xAC1EQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2gAMAwEAAhEDEQA/AN2iiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiilxQAlFLijFACUUuKMUAJRS4pCKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiijFABRRijFABRRiigAoopKAFpMUtPUcUANApwQ1IqHcOKnWInoKAK2zHajafSr62xP3lxTvsvtQBn7eOlJt9q0Tbe1Na344HNAGeUpu31q28RHUVC60AQkUlPIphFABRSZpaACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKCMUAFFAoxQAUtGKMUAFFGKMUAFFHNLigBuKXFOxRjHTmgAVanjjzSIm6rlvDkigB0Vr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" alt=""></div>
+      <h1>Cahier — extraits</h1>
+      <p>192 pages · description orale · retranscrites et mises en forme</p>
+    </div>
+
+    
+    <div class="sommaire">
+      <p class="eyebrow" style="text-align:center;">Sommaire — classé par thème, pas par ordre de pages</p>
+      <div class="sommaire-grid">
+        <div class="sommaire-part">
+          <p class="roman">I</p>
+          <h3>Le Soi symbolique</h3>
+          <ul><li>Symboles - p.1</li><li>Chakras &amp; aura - p.2-3</li><li>Réconciliation - p.23</li></ul>
+        </div>
+        <div class="sommaire-part">
+          <p class="roman">II</p>
+          <h3>La relation</h3>
+          <ul><li>Yadebat - p.14-22</li></ul>
+        </div>
+        <div class="sommaire-part">
+          <p class="roman">III</p>
+          <h3>Le travail sur soi</h3>
+          <ul><li>Le dossier - p.24-31 env.</li><li>Clôture - non num.</li></ul>
+        </div>
+        <div class="sommaire-part">
+          <p class="roman">IV</p>
+          <h3>Les projets</h3>
+          <ul><li>IPI 2.1 - p.4-9</li><li>Cooldown - note volante</li><li>Damier - p.12</li><li>haTD - p.13</li></ul>
+        </div>
+        <div class="sommaire-part">
+          <p class="roman">V</p>
+          <h3>Le portrait</h3>
+          <ul><li>Épilogue - dernière page</li></ul>
+        </div>
+      </div>
+    </div>
+
+    <div id="partie1" class="divider reveal">
+      <span class="tab">Classeur — Partie I</span>
+      <div class="numeral">I</div>
+      <h2>Le Soi symbolique</h2>
+      <p>Les symboles qui reviennent, les chakras, et ce qui se rapproche.</p>
+    </div>
+<section id="p1" class="reveal">
+      <p class="eyebrow">Page 1</p>
+      <h2>Symboles</h2>
+      <p class="lede">Deux signes, chacun porteur d'une trace de l'autre — puis un diagramme sans légende.</p>
+
+      <div class="symbols-row">
+        <svg class="symbol-svg" viewBox="0 0 120 120">
+          <circle cx="46" cy="70" r="26" fill="none" stroke="#EDE7D8" stroke-width="4"/>
+          <line x1="65" y1="51" x2="90" y2="26" stroke="#EDE7D8" stroke-width="4"/>
+          <line x1="90" y1="26" x2="72" y2="26" stroke="#EDE7D8" stroke-width="4"/>
+          <line x1="90" y1="26" x2="90" y2="44" stroke="#EDE7D8" stroke-width="4"/>
+          <line x1="46" y1="96" x2="46" y2="112" stroke="#EDE7D8" stroke-width="4" opacity="0.35"/>
+          <line x1="36" y1="104" x2="56" y2="104" stroke="#EDE7D8" stroke-width="4" opacity="0.35"/>
+        </svg>
+        <svg class="symbol-svg" viewBox="0 0 120 120">
+          <circle cx="60" cy="46" r="26" fill="none" stroke="#EDE7D8" stroke-width="4"/>
+          <line x1="60" y1="72" x2="60" y2="108" stroke="#EDE7D8" stroke-width="4"/>
+          <line x1="44" y1="94" x2="76" y2="94" stroke="#EDE7D8" stroke-width="4"/>
+          <line x1="79" y1="27" x2="100" y2="6" stroke="#EDE7D8" stroke-width="4" opacity="0.35"/>
+          <line x1="100" y1="6" x2="86" y2="6" stroke="#EDE7D8" stroke-width="4" opacity="0.35"/>
+          <line x1="100" y1="6" x2="100" y2="20" stroke="#EDE7D8" stroke-width="4" opacity="0.35"/>
+        </svg>
+        <p class="caption">Reconstitution libre — le masculin garde une flèche fantôme, le féminin une croix fantôme, en écho à ta description (« modifiés pour porter une partie de celui de l'autre, en opacité légère »).</p>
+      </div>
+
+      <svg class="rainbow-diagram" viewBox="0 0 420 140">
+        <defs>
+          <radialGradient id="sun" cx="50%" cy="20%" r="60%">
+            <stop offset="0%" stop-color="#FFE9A8"/>
+            <stop offset="100%" stop-color="#FFE9A8" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <circle cx="330" cy="26" r="60" fill="url(#sun)"/>
+        <circle cx="330" cy="26" r="12" fill="#F0D98C"/>
+        <g class="sun-rays" stroke="#F0D98C" stroke-width="1.5" opacity="0.6">
+          <line x1="330" y1="4" x2="330" y2="-6"/>
+          <line x1="352" y1="26" x2="364" y2="26"/>
+          <line x1="345" y1="8" x2="353" y2="0"/>
+          <line x1="345" y1="44" x2="353" y2="52"/>
+        </g>
+        <g>
+          <rect x="10"  y="100" width="26" height="30" fill="#B8342F"/>
+          <rect x="36"  y="86"  width="26" height="44" fill="#D97A34"/>
+          <rect x="62"  y="70"  width="26" height="60" fill="#D9B23C"/>
+          <rect x="88"  y="94"  width="26" height="36" fill="#3F8F63"/>
+          <rect x="114" y="60"  width="26" height="70" fill="#3C86A6"/>
+          <rect x="140" y="80"  width="26" height="50" fill="#4A5FC1"/>
+          <rect x="166" y="50"  width="26" height="80" fill="#8E5CC6"/>
+          <rect x="192" y="92"  width="26" height="38" fill="#B8342F"/>
+          <rect x="218" y="66"  width="26" height="64" fill="#D97A34"/>
+        </g>
+        <line x1="0" y1="130" x2="420" y2="130" stroke="#EDE7D8" stroke-opacity="0.3"/>
+      </svg>
+      <p class="caption" style="margin-bottom:26px;">Reconstitution libre du diagramme décrit : colonnes collées, dégradé arc-en-ciel, un soleil d'où partent des effets — sans référence indiquée dans le cahier.</p>
+
+      <p class="caption" style="margin-bottom:16px; max-width:640px;">À côté : des notes façon ADN explorant l'idée que l'espèce humaine s'hybride à force de partage et d'amour.</p>
+
+      <div class="rune liftable">$-&gt;monstre, ifUp then $pasAddict,<br>
+      'feuille'-&gt;côté féminin, ifUp or ifDown = stable (voir stop, ~équilibre).<br>
+      Sexe F whenUp pense moins avec ta bite,<br>
+      Sexe M whenDown pense plus avec ton cœur.</div>
+    </section><section id="p23" class="reveal">
+      <p class="eyebrow">Pages 2 – 3</p>
+      <h2>Chakras &amp; profil d'aura</h2>
+      <p class="lede">Une matrice par chakra, débordant dans la marge — puis la même page, dans une autre écriture.</p>
+
+      <div class="chakra-grid">
+        <div class="chakra-card liftable"><div class="chakra-dot" style="--dot-color:var(--root)"></div><h3>Racine</h3>
+          <div class="matrix"><span>4</span><span>·</span><span>·</span><span>1</span><span>·</span><span>8</span><span>·</span><span>2</span></div><p class="matrix-note">valeurs d'origine restées sur papier</p></div>
+        <div class="chakra-card liftable"><div class="chakra-dot" style="--dot-color:var(--sacral)"></div><h3>Sacré</h3>
+          <div class="matrix"><span>·</span><span>5</span><span>2</span><span>·</span><span>7</span><span>·</span><span>·</span><span>3</span></div><p class="matrix-note">valeurs d'origine restées sur papier</p></div>
+        <div class="chakra-card liftable"><div class="chakra-dot" style="--dot-color:var(--solar)"></div><h3>Plexus solaire</h3>
+          <div class="matrix"><span>9</span><span>·</span><span>·</span><span>6</span><span>·</span><span>1</span><span>4</span><span>·</span></div><p class="matrix-note">valeurs d'origine restées sur papier</p></div>
+        <div class="chakra-card liftable"><div class="chakra-dot" style="--dot-color:var(--heart)"></div><h3>Cœur</h3>
+          <div class="matrix"><span>·</span><span>3</span><span>·</span><span>·</span><span>8</span><span>2</span><span>·</span><span>5</span></div><p class="matrix-note">valeurs d'origine restées sur papier</p></div>
+        <div class="chakra-card liftable"><div class="chakra-dot" style="--dot-color:var(--throat)"></div><h3>Gorge</h3>
+          <div class="matrix"><span>1</span><span>·</span><span>7</span><span>·</span><span>·</span><span>4</span><span>·</span><span>9</span></div><p class="matrix-note">valeurs d'origine restées sur papier</p></div>
+        <div class="chakra-card liftable"><div class="chakra-dot" style="--dot-color:var(--thirdeye)"></div><h3>3ᵉ œil</h3>
+          <div class="matrix"><span>·</span><span>·</span><span>2</span><span>8</span><span>·</span><span>5</span><span>·</span><span>·</span></div><p class="matrix-note">valeurs d'origine restées sur papier</p></div>
+        <div class="chakra-card liftable"><div class="chakra-dot" style="--dot-color:var(--crown)"></div><h3>Couronne</h3>
+          <div class="matrix"><span>6</span><span>·</span><span>·</span><span>3</span><span>1</span><span>·</span><span>·</span><span>7</span></div><p class="matrix-note">valeurs d'origine restées sur papier</p></div>
+      </div>
+      <p class="caption" style="margin-top:22px;">Les grilles ci-dessus sont décoratives — un rappel du format (une matrice par chakra), pas une copie des chiffres réels. La page 3, dans une autre écriture, semble être la réponse à un test commun (« définissez votre aura » ou approchant).</p>
+    </section><section id="p23sym" class="reveal">
+      <p class="eyebrow">Page 23</p>
+      <h2>Ce qui se rapproche</h2>
+      <p class="lede">Les deux mêmes symboles qu'en page 1 — mais cette fois, ils avancent l'un vers l'autre.</p>
+
+      <div class="recon-stage">
+        <div class="recon-scribble">Delocked</div>
+        <svg class="recon-svg" viewBox="0 0 480 220">
+          <!-- porte entrouverte -->
+          <g stroke="#EDE7D8" stroke-opacity="0.35" fill="none" stroke-width="2">
+            <rect x="160" y="34" width="160" height="176"/>
+            <line x1="240" y1="34" x2="240" y2="210"/>
+            <path d="M240 34 L300 46 L300 198 L240 210" />
+          </g>
+          <line x1="240" y1="34" x2="240" y2="210" stroke="#EDE7D8" stroke-opacity="0.5" stroke-width="1"/>
+
+          <!-- symbole masculin, s'avance depuis la gauche -->
+          <g transform="translate(70,90)">
+            <circle cx="26" cy="30" r="22" fill="none" stroke="#EDE7D8" stroke-width="3.5"/>
+            <line x1="42" y1="14" x2="64" y2="-8" stroke="#EDE7D8" stroke-width="3.5"/>
+            <line x1="64" y1="-8" x2="48" y2="-8" stroke="#EDE7D8" stroke-width="3.5"/>
+            <line x1="64" y1="-8" x2="64" y2="8" stroke="#EDE7D8" stroke-width="3.5"/>
+            <line x1="26" y1="52" x2="26" y2="66" stroke="#EDE7D8" stroke-width="3" opacity="0.4"/>
+            <line x1="18" y1="59" x2="34" y2="59" stroke="#EDE7D8" stroke-width="3" opacity="0.4"/>
+          </g>
+
+          <!-- symbole féminin, s'avance depuis la droite -->
+          <g transform="translate(360,90)">
+            <circle cx="0" cy="22" r="22" fill="none" stroke="#EDE7D8" stroke-width="3.5"/>
+            <line x1="0" y1="44" x2="0" y2="70" stroke="#EDE7D8" stroke-width="3.5"/>
+            <line x1="-13" y1="58" x2="13" y2="58" stroke="#EDE7D8" stroke-width="3.5"/>
+            <line x1="15" y1="1" x2="30" y2="-14" stroke="#EDE7D8" stroke-width="3" opacity="0.4"/>
+            <line x1="30" y1="-14" x2="20" y2="-14" stroke="#EDE7D8" stroke-width="3" opacity="0.4"/>
+            <line x1="30" y1="-14" x2="30" y2="-4" stroke="#EDE7D8" stroke-width="3" opacity="0.4"/>
+          </g>
+
+          <!-- flèches d'approche, pointillées -->
+          <line x1="128" y1="118" x2="156" y2="118" stroke="var(--rose)" stroke-width="1.5" stroke-dasharray="4 4"/>
+          <polygon points="156,118 149,114 149,122" fill="var(--rose)"/>
+          <line x1="352" y1="118" x2="324" y2="118" stroke="var(--gold)" stroke-width="1.5" stroke-dasharray="4 4"/>
+          <polygon points="324,118 331,114 331,122" fill="var(--gold)"/>
+        </svg>
+      </div>
+      <p class="caption" style="text-align:center; max-width:440px; margin:14px auto 0;">Reconstitution libre — porte entrouverte au centre, un symbole de chaque côté avançant vers l'ouverture. « Delocked » griffonné en fond de page, sans autre précision dans le cahier.</p>
+    </section>
+    <div id="partie2" class="divider reveal">
+      <span class="tab">Classeur — Partie II</span>
+      <div class="numeral">II</div>
+      <h2>La relation</h2>
+      <p>Un jeu de questions à deux, pris au sérieux.</p>
+    </div>
+<section id="yadebat" class="reveal" style="background: radial-gradient(600px 360px at 50% 0%, var(--blush), transparent 65%); padding: 40px 0 4px; margin-top: -40px;">
+      <p class="eyebrow" style="color:var(--rose)">Pages 14 – 22</p>
+
+      <div class="yadebat-title">
+        <div class="frame-box" style="background: rgba(122,46,58,0.12);"><h2>Yadebat</h2></div>
+      </div>
+
+      <div class="yq relative">
+        <p class="qnum">Page 14</p>
+        <p class="q">Combien de temps qu'on est en couple ?</p>
+        <p class="a">Même dans l'ignorance, nous l'avons toujours été <span style="color:var(--rose)">↘</span> — mais ça ne compte pas.</p>
+
+        <p class="poem">Libre par besoin<br>sans assumé<br>puis séparé puis remis<br>ensemble sans vouloir se<br>priver de liberté.</p>
+
+        <p class="a">En amour, ma devise, c'est plutôt :</p>
+        <div class="motto">
+          <svg viewBox="0 0 52 52">
+            <circle cx="26" cy="26" r="7" fill="none" stroke="#F0D98C" stroke-width="2"/>
+            <g stroke="#F0D98C" stroke-width="2">
+              <line x1="26" y1="2" x2="26" y2="14"/>
+              <line x1="26" y1="38" x2="26" y2="50"/>
+              <line x1="2" y1="26" x2="14" y2="26"/>
+              <line x1="38" y1="26" x2="50" y2="26"/>
+            </g>
+          </svg>
+          <span>« L'union fait la force,<br>jamais deux sans toi »</span>
+        </div>
+
+        <p class="a">Jamais deux sans trois — mais pas pour les plans à trois. Juste parce que j'ai dit à ma psy que j'y croyais, et c'est arrivé. Merci bon Dieu. Sinon, l'union fait la force : seul on va plus vite, ensemble on va plus loin.</p>
+
+        <p class="a" style="margin-top:20px;">Si tu me proposais d'ouvrir notre relation :</p>
+        <ul class="choice-list">
+          <li>Non, sans moi du coup</li>
+          <li>Oui, à contrecœur, pour ne pas te perdre</li>
+          <li>Oui, de ouf !</li>
+        </ul>
+        <p class="a" style="font-style:italic;">Tout m'intéresse, rien ne me plaît.</p>
+      </div>
+
+      <div class="yq">
+        <p class="qnum">Page 15</p>
+        <p class="a">Besoin de rencontrer d'autres personnes. Partager, se nourrir. Ouvrir, oui — mais pas pour tout, ni pour tout le monde. Sans cacher, ni mentir.</p>
+        <p class="q" style="font-size:17px;">Complète : si mon partenaire trouve quelqu'un d'autre attirant, je <span class="blank-line"></span></p>
+        <p class="poem">J'essaie de faire ce que je peux,<br>donner de l'amour,<br>me rendre intéressant,<br>puis je laisse la place<br>pour le bien-être.</p>
+      </div>
+
+      <div class="yq">
+        <p class="qnum">Page 16</p>
+        <p class="q">La jalousie, pour vous, c'est : une preuve d'amour ? de la possessivité ? un peu des deux ?</p>
+        <p class="a">Un peu des deux — parce qu'amour et attachement, je suis jaloux quand j'en perds. Et je rejoins ce témoignage : c'est la sonnette d'alarme. Je ne suis pas jaloux pour rien — c'est parce que je perds de l'amour, de l'importance, au détriment de quelqu'un d'autre, plus beau, plus intelligent, plus intéressant et attirant à ce moment-là.</p>
+        <p class="a" style="font-style:italic;">Jalousie : pas bien avec la situation.</p>
+      </div>
+
+      <div class="yq">
+        <p class="qnum">Page 17</p>
+        <p class="q">Les règles de la relation</p>
+        <p class="a">Être honnête. Si possible, pas quelqu'un que j'ai rencontré — pour éviter l'image dans la tête. Avant une situation : discuter du comportement à adopter — soudé et proche, libre, éloigné, détaché. <em>(ex. : concert à Apt)</em></p>
+      </div>
+
+      <div class="yq relative">
+        <span class="big-q">?</span>
+        <p class="qnum">Page 18</p>
+        <p class="q">C'est possible pour vous d'aimer plusieurs personnes à la fois ?</p>
+        <p class="a">T'aurais besoin d'avoir d'autres chéris pour combler ce que je ne te donne pas ? Une relation full libre, pour toi ?</p>
+      </div>
+
+      <div class="yq">
+        <p class="qnum">Page 19</p>
+        <p class="q">C'est quoi pour toi la tromperie ?</p>
+        <p class="a">Malhonnêteté, cacher ses intentions, ne pas assumer. Ne pas respecter les règles établies. Ne pas dire un truc, ou nier puis se faire découvrir.</p>
+        <p class="a" style="font-style:italic;">(l'attirance, la communication et les actes se contrôlent)</p>
+      </div>
+
+      <div class="yq">
+        <p class="qnum">Page 20</p>
+        <p class="q">Exclusivité rime avec :</p>
+        <div class="rhyme-row">
+          <span class="rhyme-chip">Sécurité / Fidélité</span>
+          <span class="rhyme-chip">Frustration / Tentation</span>
+          <span class="rhyme-chip">Emprisonnement / Étouffement</span>
+        </div>
+        <p class="a">Un peu tout — ça dépend quand, pourquoi, comment... « Tu ne pourras pas aller vers cette personne, donc tu auras quand même des envies. »</p>
+        <svg width="90" height="90" viewBox="0 0 90 90" style="margin-top:8px; opacity:.8;">
+          <g fill="none" stroke="var(--rose)" stroke-width="1.4">
+            <rect x="30" y="30" width="24" height="24" transform="rotate(8 42 42)"/>
+            <rect x="14" y="10" width="20" height="20" transform="rotate(-14 24 20)"/>
+            <rect x="58" y="12" width="18" height="18" transform="rotate(22 67 21)"/>
+            <rect x="10" y="58" width="16" height="16" transform="rotate(-30 18 66)"/>
+            <rect x="60" y="56" width="20" height="20" transform="rotate(12 70 66)"/>
+            <line x1="42" y1="42" x2="24" y2="20"/>
+            <line x1="42" y1="42" x2="67" y2="21"/>
+            <line x1="42" y1="42" x2="18" y2="66"/>
+            <line x1="42" y1="42" x2="70" y2="66"/>
+          </g>
+        </svg>
+        <p class="caption">Cube 3D chaotique, en pleine explosion, dessiné dans la marge.</p>
+      </div>
+
+      <div class="yq">
+        <p class="qnum">Page 21</p>
+        <p class="q">L'avenir, je le vois à deux.</p>
+        <p class="a">Ce n'est pas une vie pour deux, mais deux vies que l'on partage en une.</p>
+      </div>
+
+      <div class="yq">
+        <p class="qnum">Page 22</p>
+        <p class="q">On arrive au bout de ce petit jeu.</p>
+        <p class="a">Non — ce n'est pas juste un jeu. On a besoin de se mettre au clair, de se comprendre soi-même et l'autre, pour profiter de la vie sans se blesser, se priver, hésiter à faire des trucs...</p>
+        <p class="a" style="font-style:italic; color:var(--rose);">Tu te retrouves dans quelle situation ? (fais ce qui te convient)</p>
+      </div>
+    </section>
+    <div id="partie3" class="divider reveal">
+      <span class="tab">Classeur — Partie III</span>
+      <div class="numeral">III</div>
+      <h2>Le travail sur soi</h2>
+      <p>Le dossier, une enquête sur une dispute, et trois pages qui ferment la boucle.</p>
+    </div>
+<section id="journal" class="reveal">
+      <p class="eyebrow" style="color:var(--sage)">Pages 24 – 25</p>
+      <h2 style="border-bottom-color:var(--sage-dim);">Dossier : mes délires, conséquences d'une religion permissive</h2>
+
+      <div class="quest-card liftable">
+        <div class="quest-level">
+          <span>Nouveau joueur — niv. 1</span>
+          <div class="bar"></div>
+          <span>niv. max — Dernier Maître des Éléments</span>
+        </div>
+
+        <div class="quest-step">
+          <p class="num">ÉTAPE 1</p>
+          <p class="title">« Comment ne plus avoir à se défendre face à la décrédibilisation à laquelle je fais face lors des débats houleux au sein de la maison familiale ? »</p>
+          <div class="quest-tags">
+            <span>Remise en question / manipulation (sophisme)</span>
+            <span>Gestion des émotions / appui technique</span>
+            <span>Pilotage corporel et mental (décision, prise de risque)</span>
+          </div>
+        </div>
+
+        <div class="quest-step">
+          <p class="num">ÉTAPE 2</p>
+          <p class="title">Le rôle de l'artiste</p>
+          <div class="quest-triad">
+            <span>Observation</span><span>Analyse</span><span>Interprétation</span>
+          </div>
+        </div>
+
+        <div class="quest-step">
+          <p class="num">ÉTAPE 3</p>
+          <p class="title">De moins que rien, à psy pour tous</p>
+          <p class="body">Mon voyage, naître et mourir.</p>
+        </div>
+
+        <p class="quest-date">01/09/2026</p>
+      </div>
+
+      <p class="eyebrow" style="color:var(--sage); margin-top:56px;">Page 26</p>
+      <div class="open-q">
+        <p class="q">Ce qui entretient ton auto-destruction au lieu de l'améliorer, effacement mémoire ? choix ?...</p>
+        <div class="answer-space"></div>
+        <p class="hint">Place laissée libre — la réponse viendra quand elle viendra.</p>
+      </div>
+
+      <p class="eyebrow" style="color:var(--sage); margin-top:56px;">Pages ~27 – 30 (3 à 4 feuilles denses)</p>
+      <div class="dense-page liftable">
+        <p class="meta">Écriture active, mais propre — pages pleines</p>
+        <p>Une enquête de fond sur une dispute de couple pendant un week-end au ski, menée sans s'en rendre compte sur le moment — comprise seulement en la relisant aujourd'hui.</p>
+        <blockquote>« Un peu compliqué. J'arrive pas à être moi. Je me concentre sur la mission pour pas me perdre, et je suis spectateur. »</blockquote>
+      </div>
+
+      <p class="eyebrow" style="color:var(--sage); margin-top:56px;">Page (non numérotée)</p>
+      <div class="spiral-wrap">
+        <svg viewBox="0 0 240 240">
+          <g class="spiral-draw" fill="none" stroke="var(--sage)" stroke-width="1.3" opacity="0.85">
+            <!-- coquille en arcs emboîtés, façon nombre d'or -->
+            <path d="M150,120 A30,30 0 0 0 120,90" />
+            <path d="M120,90 A60,60 0 0 0 60,150" />
+            <path d="M60,150 A90,90 0 0 0 150,240" transform="translate(0,-90)"/>
+            <path d="M150,150 A55,55 0 0 1 95,205" transform="translate(0,-80)"/>
+          </g>
+          <!-- racine -->
+          <path d="M120,205 C112,215 100,222 90,232 M120,205 C128,216 138,220 148,230 M120,205 L120,222" stroke="#8B6F4E" stroke-width="1.2" fill="none" opacity="0.7"/>
+          <!-- lianes/branches fines s'enroulant vers le centre -->
+          <path d="M150,120 C165,105 168,80 150,65 C136,53 118,58 112,72" stroke="var(--sage)" stroke-width="1" fill="none" opacity="0.6"/>
+          <path d="M120,90 C108,78 106,62 118,52 C128,44 142,48 146,60" stroke="var(--sage)" stroke-width="0.8" fill="none" opacity="0.5"/>
+          <circle cx="120" cy="205" r="2" fill="var(--sage)"/>
+          <circle cx="150" cy="120" r="1.6" fill="var(--sage)"/>
+          <circle cx="120" cy="90" r="1.3" fill="var(--sage)"/>
+        </svg>
+        <p class="spiral-caption">Reconstitution libre de l'escargot du nombre d'or décrit — racine, lianes, branches, tout enroulé avec finesse.</p>
+      </div>
+
+      <p class="eyebrow" style="color:var(--sage); margin-top:56px;">Page (non numérotée)</p>
+      <p class="couplet">Pas envie de me défendre.<br>Pas envie de me laisser faire.</p>
+
+      <p class="eyebrow" style="color:var(--sage); margin-top:56px;">Page (non numérotée)</p>
+      <div class="tattoo-page liftable">
+        <div class="tattoo-glyphs">
+          <svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="14" fill="none" stroke="#EDE7D8" stroke-width="1.3"/><line x1="20" y1="6" x2="20" y2="34" stroke="#EDE7D8" stroke-width="1"/><line x1="6" y1="20" x2="34" y2="20" stroke="#EDE7D8" stroke-width="1"/></svg>
+          <svg viewBox="0 0 40 40"><polygon points="20,5 33,32 7,32" fill="none" stroke="#EDE7D8" stroke-width="1.3"/><circle cx="20" cy="24" r="4" fill="none" stroke="#EDE7D8" stroke-width="1"/></svg>
+          <svg viewBox="0 0 40 40"><path d="M20 4 V36 M8 12 L32 28 M32 12 L8 28" stroke="#EDE7D8" stroke-width="1" fill="none"/></svg>
+          <svg viewBox="0 0 40 40"><rect x="8" y="8" width="24" height="24" fill="none" stroke="#EDE7D8" stroke-width="1.3" transform="rotate(15 20 20)"/><circle cx="20" cy="20" r="6" fill="none" stroke="#EDE7D8" stroke-width="1"/></svg>
+        </div>
+        <p class="caption">Croquis de tatouages — décrits comme des associations de symboles modifiés par toi-même, vectoriels, mathématiques, élémentaires, parfois religieux ou contestataires. Trop personnels et composites pour être reproduits avec justesse : les motifs ci-dessus sont génériques, pas une transcription.</p>
+      </div>
+
+      <p class="eyebrow" style="color:var(--sage); margin-top:56px;">Page — « 1.31 »</p>
+      <div class="healing-card liftable">
+        <p style="padding:16px 20px 0; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:17px; margin:0;">Mon avis de guérison</p>
+        <div class="healing-cols">
+          <div><h4>Chakra / corps</h4>NRJ. Mode SuperSaiyan.</div>
+          <div><h4>Mental</h4>Schéma. Logique. Conscience émotionnelle.</div>
+        </div>
+        <div class="healing-aura">AURA — « Tout va bien avec le temps. J'allume la lampe à la fin de la séance. » 💡</div>
+        <div class="healing-conclusion">Conclusion : en parler, être ouvert à tous les niveaux. <em>Note : à creuser dans les règles de l'art.</em></div>
+      </div>
+
+      <p class="eyebrow" style="color:var(--sage); margin-top:56px;">Page (non numérotée)</p>
+      <div class="airy-close">
+        <svg viewBox="0 0 220 90">
+          <g fill="none" stroke="var(--sage)" stroke-width="0.9">
+            <circle cx="40" cy="45" r="16"/>
+            <circle cx="110" cy="30" r="10"/>
+            <circle cx="150" cy="60" r="20"/>
+            <path d="M40 45 Q75 20 110 30" />
+            <path d="M110 30 Q130 40 150 60" />
+            <path d="M40 45 Q90 75 150 60" />
+          </g>
+        </svg>
+        <p class="spiral-caption">Encore des symboles — aériens, esthétiques, sans légende.</p>
+      </div>
+    </section><section id="closing" class="reveal">
+      <p class="eyebrow">Page (non numérotée)</p>
+      <div class="closing-quote">
+        <p>« Le chaman est quelqu'un qui se maintient délibérément dans un état de crise spirituelle, et cela rentre parfois en conflit avec ses besoins terrestres. »</p>
+        <div class="closing-tags">
+          <span>Compréhension du Soi</span>
+          <span>KiA</span>
+          <span>Full Pure Energy</span>
+        </div>
+      </div>
+
+      <p class="eyebrow" style="text-align:center;">Page (non numérotée)</p>
+      <div class="closing-quote" style="margin-bottom:54px;">
+        <p>« Le dessin et l'écriture automatique sont des remèdes à la folie, car ils exposent la blessure dans le ressenti en laissant la conscience reconnaître ce qui fait l'obsession — et ainsi, la raison repart sur de nouvelles bases. »</p>
+      </div>
+
+      <p class="eyebrow" style="text-align:center;">Page (non numérotée)</p>
+      <div class="closing-dedicace">
+        <p>À mon Amour,<br>de la nuit des temps<br>et à travers l'infinité de l'espace.</p>
+      </div>
+    </section>
+    <div id="partie4" class="divider reveal">
+      <span class="tab">Classeur — Partie IV</span>
+      <div class="numeral">IV</div>
+      <h2>Les projets</h2>
+      <p>L'Institut Pokeristique Imaginaire, son site jamais lancé, et haTD qui, lui, tourne.</p>
+    </div>
+<section id="ipi" class="reveal">
+      <p class="eyebrow">Page 4 et suivantes</p>
+      <h2>Institut Pokeristique Imaginaire — 2.1</h2>
+
+      <div class="badge-row">
+        <svg class="badge" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="46" fill="none" stroke="var(--gold)" stroke-width="2"/>
+          <circle cx="50" cy="34" r="11" fill="var(--sacral)"/>
+          <circle cx="34" cy="62" r="11" fill="var(--sacral)"/>
+          <circle cx="66" cy="62" r="11" fill="var(--sacral)"/>
+          <circle cx="50" cy="50" r="9" fill="var(--ink)" stroke="var(--gold)" stroke-width="1.5"/>
+        </svg>
+        <div class="manifesto">
+          « L'idée vient d'un constat simple : plutôt que de regarder, jalouser les autres qui arrivent, autant nous regarder nous et nous entraider à gravir les sommets. »
+          <cite>Institut Pokeristique Imaginaire 2.1 — by Reivax (ou Phenom, toi)</cite>
+        </div>
+      </div>
+
+      <p class="caption" style="margin-bottom:14px;"><strong style="color:var(--paper)">Mission Poker Intelligent 2.1</strong> — HV / BRM / Macro / Micro. Même squelette que celui retrouvé dans <code>TPok2_0.txt</code> : c'est le même chantier, à deux endroits différents du cahier. Suivent deux à trois pages de mise en place du Discord (sécurisation, personnalisation).</p>
+
+      <div class="draft-msg liftable">Salut. Je monte un groupe de travail ! 100% investi.<br>
+      Le point important : tu dois être prêt à te remettre en question, vraiment...<br>
+      <em>(cf. verso)</em><br>
+      Jusque-là, tu ne gagnes rien, tu ne perds rien.</div>
+    </section><section id="p8" class="reveal">
+      <p class="eyebrow">Page 8</p>
+      <h2>Identité visuelle du site</h2>
+      <p class="lede">Bannière et logo façon RSI / biohazard, bouton de recrutement, adresse déjà choisie.</p>
+
+      <div class="site-mock liftable">
+        <div class="top">
+          <svg class="badge" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="46" fill="none" stroke="var(--gold)" stroke-width="2"/>
+            <circle cx="50" cy="34" r="9" fill="var(--gold)"/>
+            <circle cx="34" cy="62" r="9" fill="var(--gold)"/>
+            <circle cx="66" cy="62" r="9" fill="var(--gold)"/>
+          </svg>
+          <span class="name">l'IPI 2.1</span>
+        </div>
+        <span class="btn">Postuler au recrutement →</span>
+        <div class="mail">lipi21@laposte.net <span style="opacity:.55">(adresse prévue, pas encore créée)</span></div>
+      </div>
+    </section><section id="p9" class="reveal">
+      <p class="eyebrow">Page 9</p>
+      <h2>Grille d'évaluation de profil</h2>
+      <p class="lede">Trois colonnes, des idées notées un peu partout autour.</p>
+
+      <div class="eval-grid">
+        <div class="eval-col"><h4>Base</h4><p>Premier palier de la grille. Questions chakras (renvoi à un livre) + construction d'un graphe / image mentale, et questions techniques poker de premier niveau.</p></div>
+        <div class="eval-col"><h4>Avancé</h4><p>Palier intermédiaire — mêmes deux axes (chakra + technique), montée en exigence.</p></div>
+        <div class="eval-col"><h4>Expert</h4><p>Dernier palier — renvoi au dossier « apprenti / compétences » pour la partie technique.</p></div>
+      </div>
+      <p class="caption" style="margin-top:16px;">Note en haut de page : l'intérêt de construire un site-sondage pour faire passer tout ça est posé comme question ouverte, pas tranché.</p>
+      <div class="logic-line">IfCool then FullDiscord, IfNot Byebye with tip @growth.</div>
+    </section><section id="cooldown" class="reveal">
+      <p class="eyebrow">Note volante</p>
+      <h2>Protocole deep run</h2>
+      <div class="cooldown-card liftable">
+        <svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="19" fill="none" stroke="var(--throat)" stroke-width="2"/><path d="M22 12v10l7 5" stroke="var(--throat)" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+        <ol>
+          <li>Si deep run (table finale) → cooldown</li>
+          <li>Tout éteindre</li>
+          <li>Prendre le chien, sortir</li>
+        </ol>
+      </div>
+    </section><section id="p12" class="reveal">
+      <p class="eyebrow">Page 12</p>
+      <h2>Le damier</h2>
+      <p class="lede">Une todo-list en cases, faites et jamais faites mélangées.</p>
+      <div class="damier">
+        <div class="done">✓</div><div></div><div class="todo">···</div><div></div><div class="done">✓</div><div></div><div></div><div class="todo">···</div>
+        <div></div><div class="todo">···</div><div></div><div class="done">✓</div><div></div><div class="todo">···</div><div></div><div></div>
+        <div class="todo">···</div><div></div><div class="done">✓</div><div></div><div class="todo">···</div><div></div><div class="done">✓</div><div></div>
+      </div>
+      <p class="todo-note">Exemple daté conservé : rendez-vous médecin-conseil le 6/01/22 à 14h05, en pleine préparation d'un voyage en Europe (vaccin du chien, etc.) — une trace logistique d'une période précise.</p>
+    </section><section id="p13" class="reveal">
+      <p class="eyebrow">Page 13</p>
+      <h2>haTD — la suite</h2>
+      <div class="teaser liftable">
+        <p class="caption" style="margin:0;">Visionneur (TCG physique + numérique), nouvelle règle PvP 1v1, nouveaux mini-jeux et une poignée de détails d'implémentation.</p>
+        <ul>
+          <li>Visionneur — prochain chantier nommé</li>
+          <li>PvP — nouvelle règle 1v1 (paragraphe GDD à venir)</li>
+          <li>Récolte, XP de compte, contenu lié à Balade</li>
+          <li>« Lave » — variante rouge de la Boue</li>
+        </ul>
+      </div>
+      <p class="caption" style="margin-top:14px;">Détail complet dans <em>haTD_notes_cahier_p13.md</em>, pour ne pas dupliquer.</p>
+    </section>
+    <div id="partie5" class="divider reveal">
+      <span class="tab">Classeur — Partie V</span>
+      <div class="numeral">V</div>
+      <h2>Le portrait</h2>
+      <p>La dernière page du cahier, seule.</p>
+    </div>
+<section id="finale" class="reveal">
+      <div class="finale">
+        <div class="finale-inner">
+          <p class="eyebrow">La dernière page</p>
+          <h2>Ce qui reste, à la fin du cahier</h2>
+
+          <div class="finale-svg-wrap">
+            <svg viewBox="0 0 400 560" role="img" aria-label="Silhouette illustrée, symboles spatiaux et pyramide inversée en fond">
+              <defs>
+                <radialGradient id="beamGlow" cx="50%" cy="0%" r="75%">
+                  <stop offset="0%" stop-color="#8E5CC6" stop-opacity="0.55"/>
+                  <stop offset="100%" stop-color="#8E5CC6" stop-opacity="0"/>
+                </radialGradient>
+                <linearGradient id="beamLine" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#C9A9F0" stop-opacity="0.9"/>
+                  <stop offset="100%" stop-color="#C9A9F0" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+
+              <!-- étoiles -->
+              <g fill="#F0EAFB" opacity="0.5">
+                <circle cx="30" cy="40" r="1"/><circle cx="70" cy="90" r="1.2"/><circle cx="350" cy="60" r="1"/>
+                <circle cx="320" cy="140" r="1.4"/><circle cx="20" cy="220" r="1"/><circle cx="380" cy="240" r="1.1"/>
+                <circle cx="45" cy="330" r="1.2"/><circle cx="365" cy="400" r="1"/><circle cx="15" cy="460" r="1.3"/>
+                <circle cx="300" cy="30" r="1"/><circle cx="120" cy="20" r="1"/><circle cx="250" cy="500" r="1"/>
+              </g>
+
+              <!-- pyramide inversée + laser, arrière-plan -->
+              <g transform="translate(275,60)">
+                <circle cx="0" cy="60" r="90" fill="url(#beamGlow)"/>
+                <polygon points="-38,0 38,0 0,58" fill="none" stroke="#B39CD8" stroke-width="1.3" opacity="0.85"/>
+                <rect x="0" y="58" width="1.5" height="330" fill="url(#beamLine)"/>
+                <line x1="-30" y1="410" x2="30" y2="410" stroke="#B39CD8" stroke-width="1" opacity="0.4"/>
+              </g>
+
+              <!-- médaillon façon plaque de Pioneer, arrière-plan -->
+              <g transform="translate(70,90)" stroke="#CFC3E8" stroke-width="1" fill="none" opacity="0.55">
+                <circle r="34"/>
+                <circle r="22"/>
+                <circle r="3" fill="#CFC3E8"/>
+                <line x1="0" y1="-34" x2="0" y2="-42"/>
+                <line x1="0" y1="34" x2="0" y2="42"/>
+                <line x1="-34" y1="0" x2="-42" y2="0"/>
+                <line x1="34" y1="0" x2="42" y2="0"/>
+                <line x1="24" y1="-24" x2="30" y2="-30"/>
+                <line x1="-24" y1="-24" x2="-30" y2="-30"/>
+              </g>
+
+              <!-- silhouette exosquelette, premier plan -->
+              <g transform="translate(200,300)" stroke="#EDE7D8" stroke-width="1.6" fill="none" opacity="0.92">
+                <ellipse cx="0" cy="-190" rx="26" ry="32"/>
+                <line x1="0" y1="-158" x2="0" y2="-130"/>
+                <path d="M-46,-128 L46,-128 L58,-70 L34,-40 L0,-30 L-34,-40 L-58,-70 Z"/>
+                <line x1="-46" y1="-128" x2="-90" y2="-70"/>
+                <line x1="-90" y1="-70" x2="-96" y2="10"/>
+                <circle cx="-90" cy="-70" r="5"/>
+                <line x1="-96" y1="10" x2="-70" y2="60"/>
+                <circle cx="-96" cy="10" r="5"/>
+                <line x1="46" y1="-128" x2="90" y2="-70"/>
+                <line x1="90" y1="-70" x2="96" y2="10"/>
+                <circle cx="90" cy="-70" r="5"/>
+                <line x1="96" y1="10" x2="70" y2="60"/>
+                <circle cx="96" cy="10" r="5"/>
+                <line x1="-24" y1="-30" x2="-30" y2="70"/>
+                <line x1="-30" y1="70" x2="-26" y2="180"/>
+                <circle cx="-30" cy="70" r="5"/>
+                <line x1="24" y1="-30" x2="30" y2="70"/>
+                <line x1="30" y1="70" x2="26" y2="180"/>
+                <circle cx="30" cy="70" r="5"/>
+              </g>
+
+              <!-- glyphes-tatouages, dispersés sur la silhouette -->
+              <g transform="translate(200,300)" stroke="#EDE7D8" stroke-width="0.9" fill="none" opacity="0.65">
+                <g transform="translate(-20,-170) scale(0.5)"><circle r="12"/><line x1="0" y1="-12" x2="0" y2="12"/><line x1="-12" y1="0" x2="12" y2="0"/></g>
+                <g transform="translate(20,-100) scale(0.45)"><polygon points="0,-13 11,10 -11,10"/><circle cy="4" r="3.5"/></g>
+                <g transform="translate(-60,-40) scale(0.4)"><line x1="0" y1="-13" x2="0" y2="13"/><line x1="-11" y1="-8" x2="11" y2="8"/><line x1="11" y1="-8" x2="-11" y2="8"/></g>
+                <g transform="translate(55,-20) scale(0.4)"><rect x="-10" y="-10" width="20" height="20" transform="rotate(20)"/><circle r="4"/></g>
+                <g transform="translate(-70,40) scale(0.42)"><circle r="12"/><line x1="0" y1="-12" x2="0" y2="12"/><line x1="-12" y1="0" x2="12" y2="0"/></g>
+                <g transform="translate(70,100) scale(0.4)"><polygon points="0,-13 11,10 -11,10"/><circle cy="4" r="3.5"/></g>
+                <g transform="translate(-15,150) scale(0.4)"><line x1="0" y1="-13" x2="0" y2="13"/><line x1="-11" y1="-8" x2="11" y2="8"/><line x1="11" y1="-8" x2="-11" y2="8"/></g>
+              </g>
+            </svg>
+          </div>
+
+          <p class="finale-caption">Reconstitution libre — silhouette en traits légers, exosquelette tatoué de symboles multiples, au premier plan aux deux tiers de la page. En arrière-plan : un médaillon façon message envoyé dans l'espace, et une pyramide inversée d'où part un faisceau vers le sol, presque un vaisseau. Ni les symboles précis ni les tatouages ne sont reproduits fidèlement — seule la composition l'est.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>Cahier de 192 pages · extraits retranscrits · CarnetXB &amp; haTD_notes_cahier_p13 en compagnon</footer>
+
+  </main>
+</div>
+<div class="progress" id="progressBar"></div>
+<script>
+(function(){
+  // barre de progression de lecture
+  var bar = document.getElementById('progressBar');
+  function updateProgress(){
+    var h = document.documentElement;
+    var scrolled = h.scrollTop || document.body.scrollTop;
+    var height = (h.scrollHeight || document.body.scrollHeight) - h.clientHeight;
+    var pct = height > 0 ? (scrolled / height) * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  document.addEventListener('scroll', updateProgress, { passive:true });
+  window.addEventListener('resize', updateProgress);
+  updateProgress();
+
+  // révélation au scroll (sections + tracé de la spirale)
+  var revealables = document.querySelectorAll('.reveal, .spiral-draw');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          e.target.classList.add('in-view');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+    revealables.forEach(function(el){ io.observe(el); });
+  } else {
+    revealables.forEach(function(el){ el.classList.add('in-view'); });
+  }
+
+  // lien de nav actif selon la section visible
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('nav.rail a'));
+  var sections = navLinks.map(function(a){ return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+  if('IntersectionObserver' in window && sections.length){
+    var navIo = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        var id = '#' + e.target.id;
+        var link = navLinks.find(function(a){ return a.getAttribute('href') === id; });
+        if(!link) return;
+        if(e.isIntersecting){
+          navLinks.forEach(function(a){ a.classList.remove('active'); });
+          link.classList.add('active');
+        }
+      });
+    }, { threshold: 0, rootMargin: '-45% 0px -50% 0px' });
+    sections.forEach(function(s){ navIo.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>
