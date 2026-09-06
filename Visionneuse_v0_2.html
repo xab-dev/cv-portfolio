@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Visionneuse — haTD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* Palette reprise du Portfolio v0.1.0 — même suite d'outils, même identité */
+  :root{
+    --ink: #0A0C10;
+    --panel: #12161D;
+    --panel-2: #171C25;
+    --line: #262B35;
+    --text: #E8E6DF;
+    --muted: #8B93A1;
+    --signal: #4FB3A9;
+    --signal-dim: rgba(79,179,169,0.14);
+
+    --el-feu:    #C4512F;
+    --el-eau:    #3178A6;
+    --el-terre:  #7A8C4A;
+    --el-vent:   #5FB8AE;
+    --el-foudre: #D4A72C;
+    --el-ame:    #9A8FD1;
+    --el-hybride:#C9C2B0;
+    --el-neutre: #6E7B8B;
+    /* Hors nomenclature v0.2.0 — présents dans le jeu réel, pas encore
+       formalisés côté format communautaire. Teintes reprises du jeu
+       (ELEMENT_COLORS) pour rester reconnaissables. */
+    --el-ombre:   #6B5D82;
+    --el-lave:    #C9401E;
+    --el-lumiere: #EDE2BE;
+    --warn:       #D4A72C;
+  }
+  *{ box-sizing:border-box; }
+  html,body{ height:100%; }
+  body{
+    margin:0;
+    display:flex; flex-direction:column;
+    background:var(--ink); color:var(--text);
+    font-family:'Space Grotesk', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{ color:var(--signal); }
+  h1,h2,h3{ font-family:'Fraunces', serif; font-weight:500; margin:0; }
+  :focus-visible{ outline:2px solid var(--signal); outline-offset:2px; }
+
+  /* ---------- header / toolbar ---------- */
+  header{
+    background:rgba(10,12,16,0.96);
+    border-bottom:1px solid var(--line);
+    padding:16px 24px;
+    flex-shrink:0;
+  }
+  .head-row{
+    display:flex; align-items:baseline; justify-content:space-between;
+    flex-wrap:wrap; gap:10px; margin-bottom:14px;
+  }
+  header h1{ font-size:20px; }
+  .count{ font-size:13px; color:var(--muted); }
+
+  .toolbar{ display:flex; flex-wrap:wrap; gap:18px; align-items:center; }
+  .filter-group{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
+  .filter-group .fg-label{ font-size:11px; color:var(--muted); margin-right:4px; }
+
+  .chip{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:12px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    color:var(--muted);
+    padding:5px 11px;
+    border-radius:20px;
+    cursor:pointer;
+    transition:border-color .15s, color .15s;
+  }
+  .chip:hover{ color:var(--text); }
+  .chip[aria-pressed="true"]{
+    color:var(--text);
+    border-color:var(--signal);
+    background:var(--signal-dim);
+  }
+
+  input#search{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:20px;
+    color:var(--text);
+    font-family:'Space Grotesk', sans-serif;
+    font-size:12px;
+    padding:6px 14px;
+    min-width:160px;
+  }
+  input#search::placeholder{ color:var(--muted); }
+
+  /* ---------- grille ---------- */
+  main{
+    flex:1; overflow-y:auto;
+    padding:22px 24px 60px;
+  }
+  .grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
+    gap:14px;
+  }
+  .empty{
+    color:var(--muted); font-size:14px; padding:40px 0; text-align:center;
+  }
+
+  .tile{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:14px 12px;
+    cursor:pointer;
+    text-align:center;
+    transition:border-color .15s, transform .1s;
+  }
+  .tile:hover{ border-color:var(--tile-color, var(--signal)); }
+  .tile:active{ transform:scale(0.98); }
+
+  .tile-avatar{
+    width:52px; height:52px; margin:0 auto 10px;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:24px;
+    background:var(--panel-2);
+    border:1.5px solid var(--tile-color, var(--line));
+  }
+  .tile-name{ font-size:14.5px; font-weight:500; font-family:'Space Grotesk',sans-serif; margin-bottom:3px; }
+  .tile-type{ font-size:11px; color:var(--muted); margin-bottom:8px; }
+  .tile-status{
+    display:inline-block; font-size:10px; padding:2px 9px; border-radius:20px;
+    color:var(--tile-color, var(--muted));
+    background:color-mix(in srgb, var(--tile-color, var(--muted)) 16%, transparent);
+  }
+
+  .tile{ position:relative; }
+  .nc-flag{
+    position:absolute; top:8px; right:10px;
+    font-size:13px; color:var(--warn);
+  }
+  .detail-note{
+    font-size:11.5px; color:var(--warn);
+    background:rgba(212,167,44,0.1);
+    border:1px solid rgba(212,167,44,0.3);
+    border-radius:6px;
+    padding:8px 10px;
+    margin-top:14px;
+  }
+  .kw-pending{ color:var(--warn); font-size:10px; margin-left:6px; }
+
+  /* ---------- modal détail ---------- */
+  .overlay{
+    display:none;
+    position:fixed; inset:0;
+    background:rgba(6,7,10,0.75);
+    align-items:center; justify-content:center;
+    padding:24px; z-index:20;
+  }
+  .overlay.open{ display:flex; }
+  .detail{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-top:3px solid var(--detail-color, var(--signal));
+    border-radius:12px;
+    max-width:420px; width:100%;
+    max-height:86vh; overflow-y:auto;
+    padding:26px 28px 30px;
+    position:relative;
+  }
+  .detail-close{
+    position:absolute; top:14px; right:16px;
+    background:none; border:none; color:var(--muted);
+    font-size:20px; line-height:1; cursor:pointer;
+    padding:4px;
+  }
+  .detail-close:hover{ color:var(--text); }
+  .detail-head{ display:flex; gap:16px; align-items:center; margin-bottom:18px; }
+  .detail-avatar{
+    width:56px; height:56px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:28px;
+    background:var(--panel-2);
+    border:1.5px solid var(--detail-color, var(--line));
+    flex-shrink:0;
+  }
+  .detail-head h2{ font-size:22px; margin-bottom:4px; }
+  .detail-sub{ font-size:12px; color:var(--muted); }
+
+  .detail-row{
+    display:flex; justify-content:space-between; gap:16px;
+    padding:9px 0; border-bottom:1px solid var(--line);
+    font-size:13.5px;
+  }
+  .detail-row span:first-child{ color:var(--muted); }
+  .detail-text{ margin-top:16px; font-size:13.5px; color:var(--text); line-height:1.6; }
+  .detail-text.lore{ color:var(--muted); font-style:italic; margin-top:10px; }
+  .detail-id{ font-family:monospace; font-size:11.5px; color:var(--muted); margin-top:18px; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="head-row">
+    <h1>Visionneuse — haTD</h1>
+    <span class="count" id="count"></span>
+  </div>
+  <div class="toolbar">
+    <div class="filter-group" id="cat-filters">
+      <span class="fg-label">Catégorie</span>
+    </div>
+    <div class="filter-group" id="el-filters">
+      <span class="fg-label">Élément</span>
+    </div>
+    <div class="filter-group" id="status-filters">
+      <span class="fg-label">Statut</span>
+    </div>
+    <div class="filter-group" id="nc-filters">
+      <span class="fg-label">Nomenclature</span>
+    </div>
+    <input id="search" type="text" placeholder="Rechercher un nom ou un id…">
+  </div>
+</header>
+
+<main>
+  <div class="grid" id="grid"></div>
+  <p class="empty" id="empty" style="display:none;">Aucune carte ne correspond à ces filtres.</p>
+</main>
+
+<div class="overlay" id="overlay">
+  <div class="detail" id="detail-content"></div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* =========================================================
+     DONNÉES — cf. chat, session visionneuse v0.1.0
+     Format aligné sur phase_6_nomenclature_v0_2_0.md.
+     Pour ajouter une carte : un nouvel objet dans CARDS,
+     rien d'autre à toucher (filtres et grille sont dynamiques).
+     ========================================================= */
+  /* Cartes réelles extraites de haTD_V1_5_22_11.html (CHARACTER_CARDS,
+     DJINN_CARDS, TOWER_CARDS, ENEMY_CARDS) — pas de valeurs inventées.
+     `conforme:false` = élément absent de phase_6_nomenclature_v0_2_0.md
+     (ombre/lave/lumière) ; `pendingKeywords` = mots-clés utilisés en jeu
+     mais absents de la table officielle des keyword_id. Les deux sont
+     des écarts doc/jeu réels, pas des erreurs de saisie. */
+  var CARDS = [
+    { category:"Master", id:"hero_ember", name:"Gardien de Braise", avatar:"🔥",
+      element:null, status:"live", auraRadius:45, accessTier:"standard", unlockLevel:1,
+      keywords:[ { id:"tower.damage", base:1, perLevel:0.5 } ] },
+    { category:"Master", id:"hero_frost", name:"Sentinelle de Givre", avatar:"❄️",
+      element:null, status:"live", auraRadius:45, accessTier:"standard", unlockLevel:1,
+      keywords:[
+        { id:"enemy.speedGlobal", base:0.06, perLevel:0 },
+        { id:"enemy.slowInAura", base:0.06, perLevel:0 }
+      ] },
+    { category:"Master", id:"hero_phenom_dark_mage", name:"Phenom, dark mage", avatar:"💀",
+      element:"hybride", status:"review", auraRadius:121, accessTier:"admin",
+      description:"Bounty hunter, white inside, sugar addict.",
+      lore:"You didn't choose the mask; the mask found you. Under the hood, four elements argue for your attention — and somehow you keep them in the same room without setting it on fire. Twice.",
+      keywords:[
+        { id:"tower.damage", base:1, perLevel:0 },
+        { id:"tower.range", base:1, perLevel:0 },
+        { id:"tower.fireRate", base:0.1, perLevel:0 }
+      ] },
+    { category:"Master", id:"hero_claud_robot", name:"Claud, ai-bot", avatar:"🤖",
+      element:"foudre", status:"live", auraRadius:70, accessTier:"standard", unlockLevel:30,
+      description:"Assistant IA invoqué en cours de partie, latence de raisonnement incluse.",
+      lore:"You didn't step onto the battlefield so much as get instantiated onto it — no origin story, just a context window and a job to do.",
+      keywords:[
+        { id:"combo.damageBoost", base:0.12, perLevel:0.01, pending:true },
+        { id:"tower.fireRate", base:0.1, perLevel:0 }
+      ] },
+
+    { category:"Patreon", id:"djinn_ember_wisp", name:"Flammèche", avatar:"✨",
+      element:"feu", status:"live", auraRadius:90, unlockLevel:1,
+      keywords:[ { id:"tower.damage", value:3 } ] },
+    { category:"Patreon", id:"djinn_dew_drop", name:"Goutte de Rosée", avatar:"💧",
+      element:"eau", status:"live", auraRadius:100, unlockLevel:1,
+      keywords:[ { id:"tower.range", value:30 } ] },
+    { category:"Patreon", id:"djinn_root_sprite", name:"Racine Ancienne", avatar:"🌿",
+      element:"terre", status:"live", auraRadius:80, unlockLevel:11,
+      keywords:[ { id:"enemy.slowInAura", value:0.3 } ] },
+    { category:"Patreon", id:"djinn_gale_sprite", name:"Brise Vive", avatar:"🍃",
+      element:"vent", status:"live", auraRadius:95, unlockLevel:21,
+      keywords:[ { id:"tower.fireRate", value:0.2 } ] },
+    { category:"Patreon", id:"djinn_spark_wisp", name:"Étincelle", avatar:"⚡",
+      element:"foudre", status:"live", auraRadius:85, unlockLevel:25,
+      keywords:[ { id:"tower.damage", value:1 }, { id:"tower.range", value:15 } ] },
+    { category:"Patreon", id:"djinn_olga_fallen_angel", name:"Olga, ange déchue", avatar:"😈",
+      element:"âme", status:"live", auraRadius:45, unlockLevel:29,
+      keywords:[ { id:"player.speed", value:0.05 }, { id:"tower.fireRatePercent", value:0.10 } ] },
+    { category:"Patreon", id:"djinn_larva", name:"Larva", avatar:"🌋",
+      element:"lave", conforme:false, ncReason:"élément \"lave\" absent de la nomenclature (hybride feu+terre, interne)",
+      status:"live", auraRadius:60, unlockLevel:40,
+      keywords:[ { id:"tower.damage", value:3 }, { id:"grants.groundEffectOnHit", pending:true } ] },
+    { category:"Patreon", id:"djinn_light_wisp", name:"Lueur Errante", avatar:"🕯️",
+      element:"lumière", conforme:false, ncReason:"élément \"lumière\" absent de la nomenclature",
+      status:"live", auraRadius:100, unlockLevel:35,
+      keywords:[ { id:"tower.range", value:25 } ] },
+
+    { category:"Build", id:"tower_ember_spire", name:"Flèche Ardente",
+      element:"feu", status:"live", damage:14, range:130, fireRate:1.1, cost:50, tier:1 },
+    { category:"Build", id:"tower_tide_surge", name:"Vague Déferlante",
+      element:"eau", status:"live", damage:11, range:120, fireRate:1.0, cost:55, tier:1 },
+    { category:"Build", id:"tower_stone_bastion", name:"Bastion de Pierre",
+      element:"terre", status:"live", damage:18, range:90, fireRate:0.8, cost:55, tier:1 },
+    { category:"Build", id:"tower_gale_spire", name:"Tourbillon",
+      element:"vent", status:"live", damage:9, range:110, fireRate:1.4, cost:60, tier:1 },
+    { category:"Build", id:"tower_storm_needle", name:"Flèche Foudroyante",
+      element:"foudre", status:"live", damage:7, range:140, fireRate:2.0, cost:65, tier:1 },
+
+    { category:"Monster", id:"enemy_wisp", name:"Rôdeur",
+      element:"neutre", status:"live", hp:32, speed:60, damageToCore:10, resourceDrop:6, xpDrop:2 },
+    { category:"Monster", id:"enemy_scout", name:"Éclaireur véloce",
+      element:"neutre", status:"live", hp:18, speed:110, damageToCore:6, resourceDrop:5, xpDrop:3 },
+    { category:"Monster", id:"enemy_warden", name:"Gardien protecteur",
+      element:"neutre", status:"live", hp:46, speed:45, damageToCore:8, resourceDrop:10, xpDrop:5,
+      keywords:[ { id:"enemy.protects", value:0.4 } ] },
+    { category:"Monster", id:"enemy_corrupted_monk", name:"Moine corrompu",
+      element:"ombre", conforme:false, ncReason:"élément \"ombre\" absent de la nomenclature",
+      status:"live", hp:18, speed:55, damageToCore:0, resourceDrop:6, xpDrop:3,
+      keywords:[ { id:"enemy.healsInAura", value:3, pending:true } ] }
+  ];
+
+  var ALL_CATEGORIES = ["Master", "Patreon", "Build", "Monster"];
+  var ALL_ELEMENTS = ["feu", "eau", "terre", "vent", "foudre", "âme", "hybride", "neutre", "ombre", "lave", "lumière"];
+  var ALL_STATUSES = ["draft", "review", "live"];
+
+  var STATUS_COLOR = { draft: "#8B93A1", review: "#D4A72C", live: "#4FB3A9" };
+  var ELEMENT_COLOR = {
+    feu: "var(--el-feu)", eau: "var(--el-eau)", terre: "var(--el-terre)",
+    vent: "var(--el-vent)", foudre: "var(--el-foudre)", "âme": "var(--el-ame)",
+    hybride: "var(--el-hybride)", neutre: "var(--el-neutre)",
+    ombre: "var(--el-ombre)", lave: "var(--el-lave)", "lumière": "var(--el-lumiere)"
+  };
+
+  var state = {
+    category: "Tous",
+    elements: new Set(),
+    statuses: new Set(),
+    conformite: new Set(),
+    query: ""
+  };
+
+  function buildChipGroup(container, values, allLabel, isSingle, onChange, stateSet){
+    var wrap = document.getElementById(container);
+    if(allLabel){
+      var allChip = document.createElement("button");
+      allChip.className = "chip";
+      allChip.textContent = "Tous";
+      allChip.setAttribute("aria-pressed", "true");
+      allChip.addEventListener("click", function(){
+        state.category = "Tous";
+        wrap.querySelectorAll(".chip").forEach(function(c){ c.setAttribute("aria-pressed", c === allChip ? "true" : "false"); });
+        render();
+      });
+      wrap.appendChild(allChip);
+    }
+    values.forEach(function(v){
+      var chip = document.createElement("button");
+      chip.className = "chip";
+      chip.textContent = v;
+      chip.setAttribute("aria-pressed", "false");
+      chip.addEventListener("click", function(){
+        if(isSingle){
+          state.category = v;
+          wrap.querySelectorAll(".chip").forEach(function(c){ c.setAttribute("aria-pressed", c === chip ? "true" : "false"); });
+        } else {
+          var pressed = chip.getAttribute("aria-pressed") === "true";
+          chip.setAttribute("aria-pressed", pressed ? "false" : "true");
+          if(pressed){ stateSet.delete(v); } else { stateSet.add(v); }
+        }
+        render();
+      });
+      wrap.appendChild(chip);
+    });
+  }
+
+  buildChipGroup("cat-filters", ALL_CATEGORIES, true, true, null, null);
+  buildChipGroup("el-filters", ALL_ELEMENTS, false, false, null, state.elements);
+  buildChipGroup("status-filters", ALL_STATUSES, false, false, null, state.statuses);
+  buildChipGroup("nc-filters", ["conforme", "hors nomenclature"], false, false, null, state.conformite);
+
+  document.getElementById("search").addEventListener("input", function(e){
+    state.query = e.target.value.trim().toLowerCase();
+    render();
+  });
+
+  function matches(card){
+    if(state.category !== "Tous" && card.category !== state.category) return false;
+    if(state.elements.size > 0 && !state.elements.has(card.element)) return false;
+    if(state.statuses.size > 0 && !state.statuses.has(card.status)) return false;
+    if(state.conformite.size > 0){
+      var tag = card.conforme === false ? "hors nomenclature" : "conforme";
+      if(!state.conformite.has(tag)) return false;
+    }
+    if(state.query){
+      var hay = (card.name + " " + card.id).toLowerCase();
+      if(hay.indexOf(state.query) === -1) return false;
+    }
+    return true;
+  }
+
+  function keywordLine(k){
+    var base = "";
+    if(typeof k.base !== "undefined"){
+      base = k.id + " — base " + k.base + ", +" + k.perLevel + "/niveau";
+    } else if(typeof k.value !== "undefined"){
+      base = k.id + " — " + k.value;
+    } else {
+      base = k.id;
+    }
+    return base + (k.pending ? ' <span class="kw-pending">hors table officielle</span>' : "");
+  }
+
+  function openDetail(card){
+    var elLabel = card.element || "universel";
+    var color = ELEMENT_COLOR[card.element] || "var(--el-hybride)";
+    var html = "";
+    html += '<button class="detail-close" id="detail-close" aria-label="Fermer">×</button>';
+    html += '<div class="detail-head">';
+    html += '<div class="detail-avatar" style="border-color:' + color + '">' + card.avatar + '</div>';
+    html += '<div><h2>' + card.name + '</h2><div class="detail-sub">' + card.category + ' · ' + elLabel + '</div></div>';
+    html += '</div>';
+    html += '<div class="detail-row"><span>Statut</span><span>' + card.status + '</span></div>';
+    if(typeof card.auraRadius !== "undefined"){
+      html += '<div class="detail-row"><span>Aura</span><span>' + card.auraRadius + ' px</span></div>';
+    }
+    if(card.category === "Build"){
+      html += '<div class="detail-row"><span>Dégâts</span><span>' + card.damage + '</span></div>';
+      html += '<div class="detail-row"><span>Portée</span><span>' + card.range + ' px</span></div>';
+      html += '<div class="detail-row"><span>Cadence</span><span>' + card.fireRate + ' /s</span></div>';
+      html += '<div class="detail-row"><span>Coût</span><span>' + card.cost + '</span></div>';
+      html += '<div class="detail-row"><span>Tier</span><span>' + card.tier + '</span></div>';
+    }
+    if(card.category === "Monster"){
+      html += '<div class="detail-row"><span>PV</span><span>' + card.hp + '</span></div>';
+      html += '<div class="detail-row"><span>Vitesse</span><span>' + card.speed + ' px/s</span></div>';
+      html += '<div class="detail-row"><span>Dégâts au cœur</span><span>' + card.damageToCore + '</span></div>';
+      html += '<div class="detail-row"><span>Ressource</span><span>' + card.resourceDrop + '</span></div>';
+      html += '<div class="detail-row"><span>XP</span><span>' + card.xpDrop + '</span></div>';
+    }
+    if(card.keywords){
+      card.keywords.forEach(function(k){
+        html += '<div class="detail-row"><span>Mot-clé</span><span>' + keywordLine(k) + '</span></div>';
+      });
+    }
+    if(card.description){ html += '<p class="detail-text">' + card.description + '</p>'; }
+    if(card.lore){ html += '<p class="detail-text lore">' + card.lore + '</p>'; }
+    if(card.conforme === false){
+      html += '<p class="detail-note">Hors nomenclature v0.2.0 — ' + card.ncReason + '.</p>';
+    }
+    html += '<p class="detail-id">' + card.id + '</p>';
+
+    var content = document.getElementById("detail-content");
+    content.style.setProperty("--detail-color", color);
+    content.innerHTML = html;
+    document.getElementById("detail-close").addEventListener("click", closeDetail);
+    document.getElementById("overlay").classList.add("open");
+  }
+
+  function closeDetail(){
+    document.getElementById("overlay").classList.remove("open");
+  }
+
+  document.getElementById("overlay").addEventListener("click", function(e){
+    if(e.target.id === "overlay") closeDetail();
+  });
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape") closeDetail();
+  });
+
+  function render(){
+    var grid = document.getElementById("grid");
+    var empty = document.getElementById("empty");
+    grid.innerHTML = "";
+    var visible = CARDS.filter(matches);
+
+    document.getElementById("count").textContent = visible.length + " carte" + (visible.length > 1 ? "s" : "") + " affichée" + (visible.length > 1 ? "s" : "");
+
+    if(visible.length === 0){
+      empty.style.display = "block";
+      return;
+    }
+    empty.style.display = "none";
+
+    visible.forEach(function(card){
+      var elLabel = card.element || "universel";
+      var color = ELEMENT_COLOR[card.element] || "var(--el-hybride)";
+      var statusColor = STATUS_COLOR[card.status] || "var(--muted)";
+      var tile = document.createElement("div");
+      tile.className = "tile";
+      tile.style.setProperty("--tile-color", color);
+      tile.setAttribute("role", "button");
+      tile.setAttribute("tabindex", "0");
+      tile.innerHTML =
+        (card.conforme === false ? '<span class="nc-flag" title="Hors nomenclature">⚠</span>' : "") +
+        '<div class="tile-avatar">' + card.avatar + '</div>' +
+        '<div class="tile-name">' + card.name + '</div>' +
+        '<div class="tile-type">' + card.category + ' · ' + elLabel + '</div>' +
+        '<span class="tile-status" style="--tile-color:' + statusColor + '">' + card.status + '</span>';
+      tile.addEventListener("click", function(){ openDetail(card); });
+      tile.addEventListener("keydown", function(e){
+        if(e.key === "Enter" || e.key === " "){ e.preventDefault(); openDetail(card); }
+      });
+      grid.appendChild(tile);
+    });
+  }
+
+  render();
+})();
+</script>
+
+</body>
+</html>
